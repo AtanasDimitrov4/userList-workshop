@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import userService from "../services/userService";
 
@@ -8,13 +8,14 @@ import Search from "./Search";
 
 
 export default function UserList() {
+  const[users, setUsers] = useState([]);
 
   useEffect(() => {
       userService.getAll()
       .then(result => {
-        console.log(result)
+        setUsers(result);
       })
-  }, []);
+    }, []);
   return (
     <section className="card users-container">
       <Search />
@@ -166,7 +167,11 @@ export default function UserList() {
             </tr>
           </thead>
           <tbody>
-            <UserListItem />
+            {users.map(user => <UserListItem 
+            key={user._id} 
+            {...user}
+            />)}
+            
           </tbody>
         </table>
       </div>
